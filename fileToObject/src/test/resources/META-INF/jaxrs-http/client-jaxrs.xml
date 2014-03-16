@@ -1,0 +1,38 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:http="http://cxf.apache.org/transports/http/configuration"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+http://cxf.apache.org/transports/http/configuration http://cxf.apache.org/schemas/configuration/http-conf.xsd">
+
+	<import resource="classpath:/META-INF/cxf/pangaea-cxf-client.xml" />
+	 
+	  <!-- http conduit name * means it will apply to all host. For specific host, 
+		you can provide the pattern like https://localhost:.*/bookstore/securebooks.* 
+		possible values for Connection="Keep-Alive" or "close". 
+		
+		ConnectionTimeout = time out while establishing a new connection - in milliseconds. 
+		ReceieveTimeout = Specifies the amount of time, in milliseconds, that the consumer will wait 
+		for a response before it times out. 0 is infinite. 
+		AutoRedirect = Specifies if the consumer will automatically follow a server issued redirection. (name is not part of standard)
+		Connection = The connection disposition. If close the connection to the server is closed after each request/response dialog. If Keep-Alive the 
+		client requests the server to keep the connection open, and if the server honors the keep alive request, the connection is reused. Many servers 
+		and proxies do not honor keep-alive requests.
+ 		MaxRetransmit = Specifies the maximum amount of retransmits that are allowed for redirects. Retransmits for authorization is included in the 
+ 		retransmit count. Each redirect may cause another retransmit for a UNAUTHORIZED response code, ie. 401. Any negative number indicates unlimited 
+ 		retransmits, although, loop protection is provided. The default is unlimited. (name is not part of standard). 
+ 		AllowChunking = If true, the client is free to use chunking streams if it wants, but it is not required to use chunking streams. If false, the 
+ 		client must use regular, non-chunked requests in all cases.
+ 		ChunkingThreshold = If AllowChunking is true, this sets the threshold at which messages start getting chunked. Messages under this limit do not get chunked.
+ 		AcceptLanguage = Specifies the language the client desires (e.g., English, French, etc.). 
+ 		AcceptEncoding = Specifies the encoding the client is prepared to handle (e.g., gzip)
+ 		Cache-Control = Most commonly used to specify no-cache, however the standard supports a dozen or so caching related directives for requests. 
+		-->
+	<http:conduit name="*">
+		<http:client ConnectionTimeout="3000000" ReceiveTimeout="3000000"
+			AutoRedirect="false" Connection="close" MaxRetransmits="-1"
+			AllowChunking="true" ChunkingThreshold="4096" AcceptLanguage="English"
+			AcceptEncoding="UTF-8" CacheControl="no-cache" />
+	</http:conduit>
+	
+</beans>	
+	

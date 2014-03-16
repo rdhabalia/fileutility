@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+  <xs:element name="BugCollection">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Project"/>
+        <xs:element maxOccurs="unbounded" ref="BugInstance"/>
+        <xs:element ref="Errors"/>
+        <xs:element ref="FindBugsSummary"/>
+        <xs:element ref="ClassFeatures"/>
+        <xs:element ref="History"/>
+      </xs:sequence>
+      <xs:attribute name="analysisTimestamp" use="required" type="xs:integer"/>
+      <xs:attribute name="release" use="required"/>
+      <xs:attribute name="sequence" use="required" type="xs:integer"/>
+      <xs:attribute name="timestamp" use="required" type="xs:integer"/>
+      <xs:attribute name="version" use="required" type="xs:NMTOKEN"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Project">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="Jar"/>
+        <xs:element maxOccurs="unbounded" ref="AuxClasspathEntry"/>
+        <xs:element ref="SrcDir"/>
+      </xs:sequence>
+      <xs:attribute name="filename" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Jar" type="xs:string"/>
+  <xs:element name="AuxClasspathEntry" type="xs:string"/>
+  <xs:element name="SrcDir" type="xs:string"/>
+  <xs:element name="BugInstance">
+    <xs:complexType>
+      <xs:choice maxOccurs="unbounded">
+        <xs:element ref="SourceLine"/>
+        <xs:element ref="Class"/>
+        <xs:element ref="Field"/>
+        <xs:element ref="LocalVariable"/>
+        <xs:element ref="Method"/>
+      </xs:choice>
+      <xs:attribute name="abbrev" use="required" type="xs:NCName"/>
+      <xs:attribute name="category" use="required" type="xs:NCName"/>
+      <xs:attribute name="priority" use="required" type="xs:integer"/>
+      <xs:attribute name="type" use="required" type="xs:NCName"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Class">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="SourceLine"/>
+      </xs:sequence>
+      <xs:attribute name="classname" use="required"/>
+      <xs:attribute name="role" type="xs:NCName"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Field">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="SourceLine"/>
+      </xs:sequence>
+      <xs:attribute name="classname" use="required"/>
+      <xs:attribute name="isStatic" use="required" type="xs:boolean"/>
+      <xs:attribute name="name" use="required"/>
+      <xs:attribute name="role" type="xs:NCName"/>
+      <xs:attribute name="signature" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="LocalVariable">
+    <xs:complexType>
+      <xs:attribute name="name" use="required"/>
+      <xs:attribute name="pc" use="required" type="xs:integer"/>
+      <xs:attribute name="register" use="required" type="xs:integer"/>
+      <xs:attribute name="role" use="required" type="xs:NCName"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Method">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="SourceLine"/>
+      </xs:sequence>
+      <xs:attribute name="classname" use="required"/>
+      <xs:attribute name="isStatic" use="required" type="xs:boolean"/>
+      <xs:attribute name="name" use="required"/>
+      <xs:attribute name="signature" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="Errors">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="MissingClass"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="MissingClass" type="xs:string"/>
+  <xs:element name="FindBugsSummary">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="PackageStats"/>
+      </xs:sequence>
+      <xs:attribute name="clock_seconds" use="required" type="xs:decimal"/>
+      <xs:attribute name="cpu_seconds" use="required" type="xs:decimal"/>
+      <xs:attribute name="gc_seconds" use="required" type="xs:decimal"/>
+      <xs:attribute name="num_packages" use="required" type="xs:integer"/>
+      <xs:attribute name="peak_mbytes" use="required" type="xs:decimal"/>
+      <xs:attribute name="priority_2" use="required" type="xs:integer"/>
+      <xs:attribute name="priority_3" use="required" type="xs:integer"/>
+      <xs:attribute name="priority_4" use="required" type="xs:integer"/>
+      <xs:attribute name="timestamp" use="required"/>
+      <xs:attribute name="total_bugs" use="required" type="xs:integer"/>
+      <xs:attribute name="total_classes" use="required" type="xs:integer"/>
+      <xs:attribute name="total_size" use="required" type="xs:integer"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="PackageStats">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="ClassStats"/>
+      </xs:sequence>
+      <xs:attribute name="package" use="required" type="xs:NCName"/>
+      <xs:attribute name="priority_2" type="xs:integer"/>
+      <xs:attribute name="priority_3" type="xs:integer"/>
+      <xs:attribute name="priority_4" type="xs:integer"/>
+      <xs:attribute name="total_bugs" use="required" type="xs:integer"/>
+      <xs:attribute name="total_size" use="required" type="xs:integer"/>
+      <xs:attribute name="total_types" use="required" type="xs:integer"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ClassStats">
+    <xs:complexType>
+      <xs:attribute name="bugs" use="required" type="xs:integer"/>
+      <xs:attribute name="class" use="required"/>
+      <xs:attribute name="interface" use="required" type="xs:boolean"/>
+      <xs:attribute name="priority_2" type="xs:integer"/>
+      <xs:attribute name="priority_3" type="xs:integer"/>
+      <xs:attribute name="priority_4" type="xs:integer"/>
+      <xs:attribute name="size" use="required" type="xs:integer"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="ClassFeatures">
+    <xs:complexType/>
+  </xs:element>
+  <xs:element name="History">
+    <xs:complexType/>
+  </xs:element>
+  <xs:element name="SourceLine">
+    <xs:complexType>
+      <xs:attribute name="classname" use="required"/>
+      <xs:attribute name="end" use="required" type="xs:integer"/>
+      <xs:attribute name="endBytecode" use="required" type="xs:integer"/>
+      <xs:attribute name="role" type="xs:NCName"/>
+      <xs:attribute name="sourcefile" use="required" type="xs:NCName"/>
+      <xs:attribute name="sourcepath" use="required"/>
+      <xs:attribute name="start" use="required" type="xs:integer"/>
+      <xs:attribute name="startBytecode" use="required" type="xs:integer"/>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
